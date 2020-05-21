@@ -1,19 +1,74 @@
 /* Create two equal columns that floats next to each other */
-
-* {
-  box-sizing: border-box;
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-/* Create two equal columns that floats next to each other */
-.column {
-  float: left;
-  width: 50%;
-  padding: 10px;
+body {
+    width: 100%;
+    margin: 0;
 }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+header {
+  height: 40pt;
+  background-color: aliceblue;
+  border-bottom: 1pt solid black;
 }
+
+.main {
+    width: 80%;
+    height: 400pt;
+    margin: auto;
+    padding: 0;
+    /*border: 1pt solid black;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+}
+
+.left_column {
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+    height: 100%;
+    /*background-color: aliceblue;*/
+    text-align: center;
+    padding: 10%;
+    /*border-right: 1px solid black;*/
+}
+
+.right_column {
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+    height: 100%;
+    /*background-color: aliceblue;*/
+    text-align: center;
+    padding: 10%;
+}
+
+.split_pdf_content {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 10%;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/*!* Clear floats after the columns *!*/
+/*.row:after {*/
+/*  content: "";*/
+/*  display: table;*/
+/*  clear: both;*/
+/*}*/
