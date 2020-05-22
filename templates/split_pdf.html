@@ -11,10 +11,25 @@
 <div class="main">
     <div class="split_pdf_content">
         <div class="upload-btn-wrapper">
-            <button class="btn"><h1>Upload PDF to split</h1></button>
-            <input type="file" name="myfile"/>
+            {% if filename is none %}
+                <button class="btn">
+                    <h1>Upload PDF to split</h1>
+                    <form method="post" enctype=multipart/form-data>
+                        <input type="file" name="file" onchange="this.form.submit()"/>
+                    </form>
+                </button>
+            {% else %}
+                <p> {{ filename }}</p>
+                <a href="/download" download>
+                 <button class="btn">
+                    <h1>Download PDFs</h1>
+                </button>
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
+
+
 </body>
 </html>

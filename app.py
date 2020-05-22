@@ -1,8 +1,10 @@
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for
+import zipfile
+
+from flask import Flask, render_template, request, flash, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 
-from utils import allowed_file
+from utils import allowed_file, pdf_split
 
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "files")
 
@@ -11,11 +13,12 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route("/")
-def upload_file_home():
-    return render_template("upload_file.html")
+# @app.route("/", methods=['GET', 'POST'])
+# def upload_file_home():
+#     return render_template("upload_file.html")
 
-@app.route("/home")
+
+@app.route("/")
 def home():
     print(UPLOAD_FOLDER)
     return render_template("home.html")
@@ -23,10 +26,10 @@ def home():
 
 @app.route("/split_pdf")
 def split_pdf():
-    return render_template("split_pdf.html")
+    return render_template("split_pdf.html", filename=None)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/split_pdf', methods=['GET', 'POST'])
 def upload_pdf():
     print("Request method:", request.method)
     if request.method == 'POST':
@@ -44,8 +47,13 @@ def upload_pdf():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('home.html', filename=filename))
+            pdf_split(app.config['UPLOAD_FOLDER'], filename)
+            return render_template('split_pdf.html', filename=filename.replace("pdf", "zip"))
 
+@app.route('/download')
+def download_file():
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], "2019-10-16_farrowtech_malte_overview.zip")
+    return send_file(file_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
