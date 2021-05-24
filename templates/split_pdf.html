@@ -20,7 +20,7 @@
                 </button>
             {% else %}
                 <p> {{ filename }}</p>
-                <a href="/download" download>
+                <a href="{{ url_for('download', fn=filename) }}">
                  <button class="btn">
                     <h1>Download PDFs</h1>
                 </button>

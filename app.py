@@ -1,7 +1,6 @@
 import os
-import zipfile
 
-from flask import Flask, render_template, request, flash, redirect, url_for, send_file
+from flask import Flask, render_template, request, flash, redirect, send_file
 from werkzeug.utils import secure_filename
 
 from utils import allowed_file, pdf_split
@@ -31,7 +30,6 @@ def split_pdf():
 
 @app.route('/split_pdf', methods=['GET', 'POST'])
 def upload_pdf():
-    print("Request method:", request.method)
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -50,10 +48,13 @@ def upload_pdf():
             pdf_split(app.config['UPLOAD_FOLDER'], filename)
             return render_template('split_pdf.html', filename=filename.replace("pdf", "zip"))
 
-@app.route('/download')
-def download_file():
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], "2019-10-16_farrowtech_malte_overview.zip")
+
+@app.route('/download', methods=['GET'])
+def download():
+    fn = request.args.get('fn')
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], fn)
     return send_file(file_path, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
